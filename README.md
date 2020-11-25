@@ -1,5 +1,8 @@
 # Cura WASM Definitions
 [![npm](https://img.shields.io/npm/v/cura-wasm-definitions)](https://npmjs.com/package/cura-wasm-definitions)
+[![tests](https://img.shields.io/github/workflow/status/Cloud-CNC/cura-wasm-definitions/Tests?label=tests)](https://github.com/Cloud-CNC/cura-wasm-definitions/actions)
+[![last commit](https://img.shields.io/github/last-commit/Cloud-CNC/cura-wasm-definitions)](https://github.com/Cloud-CNC/cura-wasm-definitions/commits/master)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCloud-CNC%2Fcura-wasm-definitions.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FCloud-CNC%2Fcura-wasm-definitions?ref=badge_shield)
 
 3D printer definitions for [Cura WASM](https://github.com/cloud-cnc/cura-wasm)
 
@@ -46,3 +49,5 @@ When you call the [default-exported function](./src/index.ts) (`ResolveDefinitio
 
 ## What's the license?
 Cura WASM Definitions relies on Cura (The upstream for 3D printer definitions) which which uses LGPL3+ hence the LGPL3+ license requirement. With that said, the LGPL3+ license only applies to `tests/index.ts` and all files in the `src/definitions` directory (Excluding `src/definitions/index.ts`). All other files use the MIT license.
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FCloud-CNC%2Fcura-wasm-definitions.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FCloud-CNC%2Fcura-wasm-definitions?ref=badge_large)
