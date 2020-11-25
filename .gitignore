@@ -1,0 +1,12 @@
+# Build
+dist
+
+# Definitions
+src/definitions
+
+# Istanbul
+.nyc_output
+coverage
+
+# Node Modules
+node_modules

@@ -1,0 +1,53 @@
+{
+  "name": "cura-wasm-definitions",
+  "version": "1.0.0-alpha.0",
+  "description": "3D printer definitions for Cura WASM",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/es/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "coverage": "nyc --reporter=lcov npm run test",
+    "generate": "ts-node ./generate.ts",
+    "lint": "eslint .",
+    "test": "mocha -r ts-node/register --colors --exit --timeout 60000 tests/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cloud-CNC/cura-wasm-definitions.git"
+  },
+  "keywords": [
+    "cura",
+    "cura-engine",
+    "cloud-cnc"
+  ],
+  "author": "Cloud-CNC",
+  "license": "(MIT AND LGPL-3.0-or-later)",
+  "bugs": {
+    "url": "https://github.com/Cloud-CNC/cura-wasm-definitions/issues"
+  },
+  "homepage": "https://github.com/Cloud-CNC/cura-wasm-definitions#readme",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@types/chai": "^4.2.14",
+    "@types/lodash": "^4.14.165",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^14.14.9",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "chai": "^4.2.0",
+    "eslint": "^7.14.0",
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
+    "rollup": "^2.33.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
+  }
+}
