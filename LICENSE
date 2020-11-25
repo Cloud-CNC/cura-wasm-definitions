@@ -23,8 +23,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-["tests/index.ts" and all files in "src/definitions" (Excluding
-"src/definitions/index.ts") are licensed under the below LGPL3+ open source license]
+["tests/index.ts" and all files in "src/definitions", "src/extruders" (Excluding
+"src/definitions/index.ts", "src/extruders/index.ts") are licensed under the below LGPL3+ open source license]
 
     GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

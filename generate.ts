@@ -3,10 +3,10 @@
  */
 
 //Imports
-import { existsSync, readdirSync, renameSync, rmSync, writeFileSync } from 'fs';
-import { execSync } from 'child_process';
-import { join } from 'path';
-import { zip } from 'lodash';
+import {existsSync, readdirSync, renameSync, rmSync, writeFileSync} from 'fs';
+import {execSync} from 'child_process';
+import {join} from 'path';
+import {zip} from 'lodash';
 
 //If definitions already exist, remove it
 if (existsSync('src/definitions'))
@@ -19,14 +19,18 @@ if (existsSync('src/definitions'))
 }
 
 //Clone
-execSync(`git clone --depth 1 --filter=blob:none --no-checkout https://github.com/Ultimaker/Cura.git upstream`);
+execSync('git clone --depth 1 --filter=blob:none --no-checkout https://github.com/Ultimaker/Cura.git upstream');
 
 //Checkout
 execSync('git sparse-checkout init --cone', {
   cwd: 'upstream'
 });
 
-execSync(`git sparse-checkout set resources/definitions`, {
+execSync('git sparse-checkout add resources/definitions', {
+  cwd: 'upstream'
+});
+
+execSync('git sparse-checkout add resources/extruders', {
   cwd: 'upstream'
 });
 
@@ -36,8 +40,11 @@ execSync('git checkout', {
 
 console.log('⬇ Cloned 3D printer definitions!');
 
-//Copy and remove
-renameSync('upstream/resources/definitions', 'src/definitions')
+//Copy files
+renameSync('upstream/resources/definitions', 'src/definitions');
+renameSync('upstream/resources/extruders', 'src/extruders');
+
+//Remove cloned repository
 rmSync('upstream', {
   recursive: true
 });
@@ -45,10 +52,12 @@ rmSync('upstream', {
 console.log('📂 Moved definitions!');
 
 //Get list of definitions
-const rawDefinitions = readdirSync('src/definitions')
-const normalizedDefinitions = rawDefinitions.map(definition => {
+const rawDefinitions = readdirSync('src/definitions');
+const normalizedDefinitions = rawDefinitions.map(definition =>
+{
   //If the name starts with a number, append an underscore
-  if (definition.length > 0 && /\d/.test(definition.charAt(0))) {
+  if (definition.length > 0 && /\d/.test(definition.charAt(0)))
+  {
     definition = '_' + definition;
   }
 
@@ -60,7 +69,7 @@ const normalizedDefinitions = rawDefinitions.map(definition => {
 
   if (matches != null)
   {
-    return matches[1]
+    return matches[1];
   }
   else
   {
@@ -102,4 +111,4 @@ ${definitionExports}
 //Write the file
 writeFileSync(join(__dirname, 'src/definitions/index.ts'), template);
 
-console.log(`📝 Generated index for ${rawDefinitions.length} definitions!`)
+console.log(`📝 Generated index for ${rawDefinitions.length} definitions!`);
