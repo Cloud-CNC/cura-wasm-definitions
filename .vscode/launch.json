@@ -5,6 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Generate",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "generate"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
+    },
+    {
       "name": "Tests",
       "request": "launch",
       "runtimeArgs": [

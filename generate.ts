@@ -43,20 +43,20 @@ execSync('git checkout', {
 console.log('⬇ Cloned 3D definitions!');
 
 //Get definitions
-const rawPrinters = readdirSync('upstream/resources/definitions');
 const rawExtruders = readdirSync('upstream/resources/extruders');
+const rawPrinters = readdirSync('upstream/resources/definitions');
 
 //Move/merge definitions
+for (const definition of rawExtruders)
+{
+  //Move to "src/definitions"
+  renameSync(join('upstream/resources/extruders', definition), join('src/definitions', definition.toLowerCase()));
+}
+
 for (const definition of rawPrinters)
 {
   //Move to "src/definitions"
   renameSync(join('upstream/resources/definitions', definition), join('src/definitions', definition));
-}
-
-for (const definition of rawExtruders)
-{
-  //Move to "src/definitions"
-  renameSync(join('upstream/resources/extruders', definition), join('src/definitions', definition));
 }
 
 //Remove cloned repository
@@ -73,7 +73,7 @@ console.log('📂 Moved definitions!');
 const normalize = (name: string) => 
 {
   //If the name starts with a number, append an underscore
-  if (name.length > 0 && /d/.test(name.charAt(0))) 
+  if (name.length > 0 && /\d/.test(name.charAt(0))) 
   {
     name = `_${name}`;
   }
@@ -97,55 +97,54 @@ const normalize = (name: string) =>
 };
 
 //Normalize definitions
-const printers = rawPrinters.map(printer => ({
-  normalized: normalize(printer),
-  raw: printer
-}));
-
 const extruders = rawExtruders.map(extruder => ({
   normalized: normalize(extruder),
-  raw: extruder
+  raw: extruder.toLowerCase()
+}));
+
+const printers = rawPrinters.map(printer => ({
+  normalized: normalize(printer),
+  raw: printer.toLowerCase()
 }));
 
 //Generate import statements
 const imports = printers
   .concat(extruders)
-  .map(definition => `import * as ${definition.normalized} from './${definition.raw};`)
+  .map(definition => `import * as ${definition.normalized} from './${definition.raw}';`)
   .join('\r\n');
 
 //Generate export statements
-const printerExports = printers
-  .map(printer => `  ${printer.normalized},`)
-  .join('\r\n');
-
 const extruderExports = extruders
   .map(extruder => `  ${extruder.normalized},`)
+  .join('\r\n');
+
+
+const printerExports = printers
+  .map(printer => `  ${printer.normalized},`)
   .join('\r\n');
 
 //Create the file template
 const template = `/* eslint-disable camelcase */
 /**
- * @fileoverview 3D printer definitions
- * 
- * **Note: If a print definition starts with a number, it will now start with an underscore. Hyphens have also been replaced by underscores.**
- * 
- * The use of static ES6 module syntax allows for tree-shaking.
+ * @fileoverview Cura Definitions
  * 
  * See https://github.com/Ultimaker/Cura/tree/master/resources/definitions
  * for more information
+ * 
+ * **THIS FILE IS MIT LICENSED!**
  */
 
 //Imports
 ${imports}
 
-//Export printer definitions
-export const printers = {
-${printerExports}
-};
-
 //Export extruder definitions
 export const extruders = {
 ${extruderExports}
+};
+
+//Export printer definitions
+export const printers = {
+${printerExports}
 };
 `;
 

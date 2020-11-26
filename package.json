@@ -14,7 +14,7 @@
     "coverage": "nyc --reporter=lcov npm run test",
     "generate": "ts-node ./generate.ts",
     "lint": "eslint .",
-    "test": "mocha -r ts-node/register --colors --exit --timeout 60000 tests/index.ts"
+    "test": "mocha -r ts-node/register --colors --exit --timeout 60000 tests/*.ts"
   },
   "repository": {
     "type": "git",
