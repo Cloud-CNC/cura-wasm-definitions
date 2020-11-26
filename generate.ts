@@ -56,7 +56,7 @@ for (const definition of rawExtruders)
 for (const definition of rawPrinters)
 {
   //Move to "src/definitions"
-  renameSync(join('upstream/resources/definitions', definition), join('src/definitions', definition));
+  renameSync(join('upstream/resources/definitions', definition), join('src/definitions', definition.toLowerCase()));
 }
 
 //Remove cloned repository

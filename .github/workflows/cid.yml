@@ -23,10 +23,6 @@ jobs:
         run: npm run lint
       - name: Generate definitions
         run: npm run generate
-      - name: Debug 1
-        run: ls src/definitions
-      - name: Debug 2
-        run: cat src/definitions/index.ts
       - uses: paambaati/codeclimate-action@v2.6.0
         name: Test
         env:
