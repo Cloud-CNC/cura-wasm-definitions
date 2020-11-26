@@ -14,7 +14,7 @@ npm i cura-wasm-definitions
 ## Usage
 ```Javascript
 import CuraWASM from 'cura-wasm';
-import ResolveDefinition from 'cura-wasm-definitions';
+import {resolveDefinition} from 'cura-wasm-definitions';
 
 const main = async () =>
 {
@@ -25,7 +25,7 @@ const main = async () =>
      * or https://github.com/Ultimaker/Cura/tree/master/resources/definitions
      * for a list of built-in definitions)
      */
-    definition: ResolveDefinition('ultimaker2'),
+    definition: resolveDefinition('ultimaker2'),
   });
 
   //Load your STL as an ArrayBuffer
