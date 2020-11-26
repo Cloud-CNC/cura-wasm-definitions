@@ -3,19 +3,47 @@
  */
 
 //Imports
-import definitions from './definitions/index';
+import {extruders, printers} from './definitions/index';
 
 /**
- * Definitions IDs
+ * Extruder IDs
  */
-export type DefinitionID = keyof typeof definitions;
+export type ExtruderID = keyof typeof extruders | 'fdmextruder';
+
+/**
+ * Printer IDs
+ */
+export type PrinterID = keyof typeof printers;
+
+/**
+ * Extruder Definition
+ */
+export interface Extruder
+{
+  name: string;
+  inherits?: ExtruderID;
+  metadata: any;
+}
 
 /**
  * 3D Printer Definition
  */
-export interface Definition
+export interface Printer
 {
   name: string;
-  metadata: any;
-  inherits?: DefinitionID;
+  inherits?: PrinterID;
+  metadata: {
+    'machine_extruder_trains'?: {
+      [key: string]: ExtruderID
+    }
+  };
+}
+
+/**
+ * Combined Extruder + 3D Printer Definition
+ */
+export interface CombinedDefinition
+{
+  extruders: Extruder[];
+  printer: Printer;
 }

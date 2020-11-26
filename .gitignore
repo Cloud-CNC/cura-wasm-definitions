@@ -3,6 +3,7 @@ dist
 
 # Definitions
 src/definitions
+src/extruders
 
 # Istanbul
 .nyc_output
@@ -10,3 +11,5 @@ coverage
 
 # Node Modules
 node_modules
+
+# Upstream definitions
