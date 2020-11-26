@@ -3,13 +3,12 @@
  */
 
 //Imports
-import {existsSync, readdirSync, renameSync, rmSync, writeFileSync} from 'fs';
 import {execSync} from 'child_process';
+import {existsSync, mkdirSync, readdirSync, renameSync, rmSync, writeFileSync} from 'fs';
 import {join} from 'path';
-import {zip} from 'lodash';
 
 //If definitions already exist, remove it
-if (existsSync('src/definitions'))
+if (existsSync('src/definitions')) 
 {
   rmSync('src/definitions', {
     recursive: true
@@ -17,6 +16,9 @@ if (existsSync('src/definitions'))
 
   console.log('❌ Removing existing definitions!');
 }
+
+//Make definitions directory
+mkdirSync('src/definitions');
 
 //Clone
 execSync('git clone --depth 1 --filter=blob:none --no-checkout https://github.com/Ultimaker/Cura.git upstream');
@@ -38,11 +40,24 @@ execSync('git checkout', {
   cwd: 'upstream'
 });
 
-console.log('⬇ Cloned 3D printer definitions!');
+console.log('⬇ Cloned 3D definitions!');
 
-//Copy files
-renameSync('upstream/resources/definitions', 'src/definitions');
-renameSync('upstream/resources/extruders', 'src/extruders');
+//Get definitions
+const rawPrinters = readdirSync('upstream/resources/definitions');
+const rawExtruders = readdirSync('upstream/resources/extruders');
+
+//Move/merge definitions
+for (const definition of rawPrinters)
+{
+  //Move to "src/definitions"
+  renameSync(join('upstream/resources/definitions', definition), join('src/definitions', definition));
+}
+
+for (const definition of rawExtruders)
+{
+  //Move to "src/definitions"
+  renameSync(join('upstream/resources/extruders', definition), join('src/definitions', definition));
+}
 
 //Remove cloned repository
 rmSync('upstream', {
@@ -51,40 +66,61 @@ rmSync('upstream', {
 
 console.log('📂 Moved definitions!');
 
-//Get list of definitions
-const rawDefinitions = readdirSync('src/definitions');
-const normalizedDefinitions = rawDefinitions.map(definition =>
+/**
+ * Normalize a name
+ * @param name The name to normalize
+ */
+const normalize = (name: string) => 
 {
   //If the name starts with a number, append an underscore
-  if (definition.length > 0 && /\d/.test(definition.charAt(0)))
+  if (name.length > 0 && /d/.test(name.charAt(0))) 
   {
-    definition = '_' + definition;
+    name = `_${name}`;
   }
 
   //Replace hyphens with underscores
-  definition = definition.replace('-', '_');
+  name = name.replace('-', '_');
 
-  //Strip out file extension
-  const matches = /(.+)\.def\.json/.exec(definition);
+  name = name.toLowerCase();
 
-  if (matches != null)
+  //Remove file extensions
+  const matches = /(.+)\.def\.json/.exec(name);
+
+  if (matches != null) 
   {
     return matches[1];
   }
-  else
+  else 
   {
-    throw new Error(`Unable to parse file: ${definition}`);
+    throw new Error(`Unable to normalize ${name}`);
   }
-});
+};
 
-//Combine filtered and normalized definitions
-const definitions = zip(rawDefinitions, normalizedDefinitions);
+//Normalize definitions
+const printers = rawPrinters.map(printer => ({
+  normalized: normalize(printer),
+  raw: printer
+}));
 
-//Generate imports
-const definitionImports = definitions.map(definition => `import * as ${definition[1]} from './${definition[0]}';`).join('\r\n');
+const extruders = rawExtruders.map(extruder => ({
+  normalized: normalize(extruder),
+  raw: extruder
+}));
 
-//Generate exports
-const definitionExports = definitions.map(definition => `  ${definition[1]},`).join('\r\n');
+//Generate import statements
+const imports = printers
+  .concat(extruders)
+  .map(definition => `import * as ${definition.normalized} from './${definition.raw};`)
+  .join('\r\n');
+
+//Generate export statements
+const printerExports = printers
+  .map(printer => `  ${printer.normalized},`)
+  .join('\r\n');
+
+const extruderExports = extruders
+  .map(extruder => `  ${extruder.normalized},`)
+  .join('\r\n');
 
 //Create the file template
 const template = `/* eslint-disable camelcase */
@@ -100,15 +136,20 @@ const template = `/* eslint-disable camelcase */
  */
 
 //Imports
-${definitionImports}
+${imports}
 
-//Export
-export default {
-${definitionExports}
+//Export printer definitions
+export const printers = {
+${printerExports}
+};
+
+//Export extruder definitions
+export const extruders = {
+${extruderExports}
 };
 `;
 
 //Write the file
 writeFileSync(join(__dirname, 'src/definitions/index.ts'), template);
 
-console.log(`📝 Generated index for ${rawDefinitions.length} definitions!`);
+console.log(`📝 Generated index for ${printers.length} printers and ${extruders.length} extruders!`);
