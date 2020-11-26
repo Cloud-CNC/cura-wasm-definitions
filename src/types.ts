@@ -45,5 +45,5 @@ export interface Printer
 export interface CombinedDefinition
 {
   extruders: Extruder[];
-  printer: Printer
+  printer: Printer;
 }

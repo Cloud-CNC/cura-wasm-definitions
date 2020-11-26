@@ -118,7 +118,7 @@ describe('resolve definitions', () =>
           has_machine_quality: true,
           preferred_variant_name: '0.4 mm',
           machine_extruder_trains: {
-            0: 'extruder'
+            0: 'extruder-0'
           },
           firmware_file: 'MarlinUltimaker2.hex'
         },

@@ -96,18 +96,22 @@ export const resolveDefinition = (id: PrinterID): CombinedDefinition =>
   const printer = resolvePrinter(id);
 
   //Get and resolve the extruders
-  let extruders = [];
+  let extruders: Extruder[] = [];
   if (printer != null && printer.metadata.machine_extruder_trains != null)
   {
     extruders = Object.values(printer.metadata.machine_extruder_trains)
       .map(extruder => resolveExtruder(extruder));
 
+    //Generate new machine extruder trains
+    const extruderTrains = {};
+
+    for (const key in extruders)
+    {
+      extruderTrains[key] = `extruder-${key}`;
+    }
+
     //Overwrite the extruder
-    printer.metadata.machine_extruder_trains = {
-      //@ts-ignore This is used by Cura WASM, so be careful when changing
-      //eslint-disable-next-line quote-props
-      '0': 'extruder'
-    };
+    printer.metadata.machine_extruder_trains = extruderTrains;
   }
 
   return {
