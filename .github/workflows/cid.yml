@@ -23,6 +23,8 @@ jobs:
         run: npm run lint
       - name: Generate definitions
         run: npm run generate
+      - name: Debug
+        run: ls src/definitions
       - uses: paambaati/codeclimate-action@v2.6.0
         name: Test
         env:
