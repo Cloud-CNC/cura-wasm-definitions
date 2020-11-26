@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /**
  * @fileoverview Cura WASM Definitions
  */
@@ -100,6 +101,13 @@ export const resolveDefinition = (id: PrinterID): CombinedDefinition =>
   {
     extruders = Object.values(printer.metadata.machine_extruder_trains)
       .map(extruder => resolveExtruder(extruder));
+
+    //Overwrite the extruder
+    printer.metadata.machine_extruder_trains = {
+      //@ts-ignore This is used by Cura WASM, so be careful when changing
+      //eslint-disable-next-line quote-props
+      '0': 'extruder'
+    };
   }
 
   return {
