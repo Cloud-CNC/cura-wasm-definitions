@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "declarationDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true
   },

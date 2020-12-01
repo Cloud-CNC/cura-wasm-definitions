@@ -13,7 +13,7 @@ npm i cura-wasm-definitions
 
 ## Usage
 ```Javascript
-import CuraWASM from 'cura-wasm';
+import {CuraWASM} from 'cura-wasm';
 import {resolveDefinition} from 'cura-wasm-definitions';
 
 const main = async () =>

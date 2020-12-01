@@ -1,10 +1,10 @@
 {
   "name": "cura-wasm-definitions",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "3D printer definitions for Cura WASM",
-  "main": "dist/cjs/index.js",
-  "module": "dist/es/index.js",
-  "types": "dist/es/index.d.ts",
+  "main": "dist/cjs.js",
+  "module": "dist/es.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
